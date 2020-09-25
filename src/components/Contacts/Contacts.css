@@ -1,0 +1,24 @@
+.contacts_item {
+    max-width: 300px;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-left: 20px;
+    border-radius: 10px;
+    border: 1px solid #93d8f8;
+    transition: .2s;
+}
+
+.contacts_item:hover, .active {
+    box-shadow: 0 5px 20px rgba(0,0,0,.2);
+}
+
+.contacts_name {
+    margin-bottom: 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.contacts_head{
+    margin: 20px;
+}
