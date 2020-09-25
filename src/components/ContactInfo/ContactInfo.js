@@ -5,14 +5,27 @@ export default class ContactInfo extends Component {
     render() {
         return (
             <div className="wrapper">
+                <h2 className="contacts_head">Edit</h2>
                 <form className="form">
-                    <input className="input first-name" type="text"/>
+                    <div>
+                        <label htmlFor="">First name</label>
+                        <input id="first-name" className="input first-name" type="text"/>
+                    </div>
+                    
+                    <div>
+                        <label htmlFor="">Last name</label>
+                        <input id="last-name" className="input last-name" type="text"/>
+                    </div>
+                    
+                    <div>
+                        <label htmlFor="">Phone</label>
+                        <input id="phone-number" className="input phone-number" type="tel"/>
+                    </div>
 
-                    <input className="input last-name" type="text"/>
-
-                    <input className="input phone-number" type="tel"/>
-
-                    <input className="input email" type="email"/>
+                    <div>
+                        <label htmlFor="">Email</label>
+                        <input id="email" className="input email" type="email"/>
+                    </div>
 
                     <div className="btn save">
                         <button className="btn save">Save</button>

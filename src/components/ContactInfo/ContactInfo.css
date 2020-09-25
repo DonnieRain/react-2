@@ -3,6 +3,20 @@
     grid-template-columns: minmax(250px,600px);
     grid-template-rows: repeat(6,1fr);
     justify-content: center;
+    margin-top: 50px;
+}
+
+.form h2 {
+    text-align: center;
+}
+
+.form div {
+    display: flex;
+    flex-direction: column;
+}
+
+.form div:last-child {
+    display: inline;
 }
 
 .input, .btn {
