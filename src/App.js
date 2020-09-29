@@ -5,21 +5,38 @@ import ContactInfo from './components/ContactInfo/ContactInfo'
 
 export default class App extends Component {
   state = {
-    listItem: [
+    listItem: [],
+    focusContact: [
       {
-        name: 'Alex',
-        lastname: 'Fes',
-        phone: '+380669429769',
-        mail: 'qweqwe@gmail.com'
+        name: ''
       }
     ]
+  }
+
+  editContact = (id) => {  
+    this.state.listItem.map(item => {
+      if(item.id == id) {
+        this.setState({
+          focusContact: [...this.state.focusContact, item]
+        })
+      }
+    })
+  }
+
+  addContact = (list) => {
+    list.id = Date.now();
+
+    this.setState({
+      listItem: [...this.state.listItem, list]
+    })
+
   }
 
   render() {
     return (
       <div className="app">
-        <Contacts list={this.state.listItem}/>
-        <ContactInfo/>
+        <Contacts list={this.state.listItem} edit={this.editContact}/>
+        <ContactInfo list={this.state.listItem} onSubmit={this.addContact} focus={this.state.focusContact}/>
       </div>
     )
   }

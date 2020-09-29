@@ -7,6 +7,6 @@
   display: grid;
   grid-template-columns: 4fr 8fr;
   width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
   background: #f2f7ff;
 }

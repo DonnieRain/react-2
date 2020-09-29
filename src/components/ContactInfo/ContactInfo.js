@@ -10,25 +10,38 @@ export default class ContactInfo extends Component {
         mail: '',
     }
 
-    handleInputChange = (e,input) => {
+    handleInputChange = (e) => {
+        const name = e.target.name
         this.setState({
-            input: e.target.value
+            [name]: e.target.value
         })
     }
 
-    render() {
+    onFormSubmit = (e) => {
+        e.preventDefault();
+
+        this.props.onSubmit({
+            name: this.state.firstName,
+            lastname: this.state.lastName,
+            phone: this.state.phoneNumber,
+            mail: this.state.mail
+        })
+    }
+
+    render() { 
         return (
             <div className="wrapper">
                 <h2 className="contacts_head">Edit</h2>
-                <form className="form">
+                <form className="form" onSubmit={this.onFormSubmit}>
                     <div>
                         <label htmlFor="">First name</label>
                         <input 
                             id="first-name" 
                             className="input first-name" 
                             type="text" 
-                            value={this.state.firstName} 
-                            handleChange={this.onInputChange}
+                            name="firstName"
+                            value={this.props.focus ? this.props.focus[0].name : ''} 
+                            onChange={this.handleInputChange}
                         />
                     </div>
                     
@@ -38,8 +51,9 @@ export default class ContactInfo extends Component {
                             id="last-name" 
                             className="input last-name" 
                             type="text" 
+                            name="lastName"
                             value={this.state.lastName} 
-                            handleChange={this.onInputChange}
+                            onChange={this.handleInputChange}
                         />
                     </div>
                     
@@ -49,8 +63,9 @@ export default class ContactInfo extends Component {
                             id="phone-number" 
                             className="input phone-number" 
                             type="tel" 
+                            name="phoneNumber"
                             value={this.state.phoneNumber} 
-                            handleChange={this.onInputChange}
+                            onChange={this.handleInputChange}
                         />
                     </div>
 
@@ -60,12 +75,13 @@ export default class ContactInfo extends Component {
                             id="email" 
                             className="input email" 
                             type="email" 
+                            name="mail"
                             value={this.state.mail} 
-                            handleChange={this.onInputChange}
+                            onChange={this.handleInputChange}
                                 />
                     </div>
 
-                    <div className="btn save">
+                    <div className="btn-block">
                         <button className="btn save">Save</button>
                         <button className="btn delete">Delete</button>
                     </div>
