@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './Contacts.css'
+import './List.css'
 
 export default class Contacts extends Component {
 
@@ -13,7 +13,7 @@ export default class Contacts extends Component {
 
                     {this.props.list.map(item => {
                         return (
-                            <div className="contacts_item" key={item.id} onClick={() => this.props.edit(item.id)}>
+                            <div className="contacts_item" key={item.id} onClick={() => this.props.onSelect(item)}>
                                 <p className="contact">{item.name}</p>
                                 <p className="contact">{item.lastname}</p>
                                 <p className="contact">{item.phone}</p>
@@ -22,7 +22,7 @@ export default class Contacts extends Component {
                         )
                     })}
                 </div>
-                <div className="add">Add</div>
+                <div onClick={this.props.addContact} className="add">Add</div>
             </div>
         )
     }

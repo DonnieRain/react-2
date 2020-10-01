@@ -1,46 +1,28 @@
 import React, { Component } from 'react'
-import './ContactInfo.css'
+import './Form.css'
 
 export default class ContactInfo extends Component {
 
-    state = {
-        firstName: '',
-        lastName: '',
-        phoneNumber: '',
-        mail: '',
-    }
-
     handleInputChange = (e) => {
-        const name = e.target.name
-        this.setState({
-            [name]: e.target.value
-        })
-    }
-
-    onFormSubmit = (e) => {
-        e.preventDefault();
-
-        this.props.onSubmit({
-            name: this.state.firstName,
-            lastname: this.state.lastName,
-            phone: this.state.phoneNumber,
-            mail: this.state.mail
-        })
-    }
+        this.props.onChange({
+          ...this.props.item,
+          [e.target.name]: e.target.value,
+        });
+      }
 
     render() { 
         return (
             <div className="wrapper">
                 <h2 className="contacts_head">Edit</h2>
-                <form className="form" onSubmit={this.onFormSubmit}>
+                <form className="form" onSubmit={(e)=>{this.props.onSubmit(e)}}>
                     <div>
                         <label htmlFor="">First name</label>
                         <input 
                             id="first-name" 
                             className="input first-name" 
                             type="text" 
-                            name="firstName"
-                            value={this.props.focus ? this.props.focus[0].name : ''} 
+                            name="name"
+                            value={this.props.item.name} 
                             onChange={this.handleInputChange}
                         />
                     </div>
@@ -51,8 +33,8 @@ export default class ContactInfo extends Component {
                             id="last-name" 
                             className="input last-name" 
                             type="text" 
-                            name="lastName"
-                            value={this.state.lastName} 
+                            name="lastname"
+                            value={this.props.item.lastname} 
                             onChange={this.handleInputChange}
                         />
                     </div>
@@ -63,8 +45,8 @@ export default class ContactInfo extends Component {
                             id="phone-number" 
                             className="input phone-number" 
                             type="tel" 
-                            name="phoneNumber"
-                            value={this.state.phoneNumber} 
+                            name="phone"
+                            value={this.props.item.phone} 
                             onChange={this.handleInputChange}
                         />
                     </div>
@@ -76,14 +58,14 @@ export default class ContactInfo extends Component {
                             className="input email" 
                             type="email" 
                             name="mail"
-                            value={this.state.mail} 
+                            value={this.props.item.mail} 
                             onChange={this.handleInputChange}
-                                />
+                        />
                     </div>
 
                     <div className="btn-block">
                         <button className="btn save">Save</button>
-                        <button className="btn delete">Delete</button>
+                        <button onClick={((e) => this.props.onRemove(e,this.props.item))} className="btn delete">Delete</button>
                     </div>
                 </form>
             </div>

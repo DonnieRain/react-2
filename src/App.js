@@ -1,43 +1,102 @@
 import React, { Component } from 'react'
 import './App.css'
-import Contacts from './components/Contacts/Contacts'
-import ContactInfo from './components/ContactInfo/ContactInfo'
+import List from './components/List/List'
+import Form from './components/Form/Form'
 
 export default class App extends Component {
-  state = {
-    listItem: [],
-    focusContact: [
-      {
-        name: ''
-      }
-    ]
-  }
+    state = {
+        list: [],
+        editingItem: {
+            id: null,
+            name: '',
+            lastname: '',
+            phone: '',
+            mail: ''
+        }
+    }
 
-  editContact = (id) => {  
-    this.state.listItem.map(item => {
-      if(item.id == id) {
+    componentDidUpdate() {
+        localStorage.getItem(this.state.editingItem.id)
+    }
+
+    handleChangeItem = item => {
+        localStorage.setItem(this.state.editingItem.id, this.state.editingItem)
         this.setState({
-          focusContact: [...this.state.focusContact, item]
-        })
-      }
-    })
-  }
+            editingItem: item,
+        });
+    };
 
-  addContact = (list) => {
-    list.id = Date.now();
+    handleSave = (e) => {
+        e.preventDefault()
+        if (this.state.editingItem.id !== null) {
+            this.setState(prev => ({
+                list: prev.list.map(e => (
+                    e.id === this.state.editingItem.id
+                        ? this.state.editingItem
+                        : e
+                )),
+            }));
+        } else {
+            this.setState(prev => ({
+                list: [...prev.list, {
+                    ...this.state.editingItem,
+                    id: Date.now(),
+                }],
+                editingItem: {
+                    id: null,
+                    name: '',
+                    lastname: '',
+                    phone: '',
+                    mail: ''
+                }
+            }));
+        }
+    };
 
-    this.setState({
-      listItem: [...this.state.listItem, list]
-    })
+    addContact = () => {
+        this.setState(()=> ({
+            editingItem: {
+                id: null,
+                name: '',
+                lastname: '',
+                phone: '',
+                mail: ''
+            }
+        }))
+        localStorage.getItem(this.state.editingItem.id)
+    }
 
-  }
+    onRemove = (e,item) => {
+        e.preventDefault()
+        this.setState(prev => ({
+            list: prev.list.filter(e => e.id !== item.id),
+            editingItem: {
+                id: null,
+                name: '',
+                lastname: '',
+                phone: '',
+                mail: ''
+            }
+        }));
+    }
 
-  render() {
-    return (
-      <div className="app">
-        <Contacts list={this.state.listItem} edit={this.editContact}/>
-        <ContactInfo list={this.state.listItem} onSubmit={this.addContact} focus={this.state.focusContact}/>
-      </div>
-    )
-  }
+ 
+
+    render() {
+        return (
+            <div className="app">
+                <List 
+                    list={this.state.list} 
+                    onSelect={this.handleChangeItem}
+                    addContact={this.addContact}
+                />
+                <Form
+                    item={this.state.editingItem}
+                    onChange={this.handleChangeItem}
+                    onSubmit={this.handleSave}
+                    onRemove={this.onRemove}
+                />
+            </div>
+        )
+    }
 }
