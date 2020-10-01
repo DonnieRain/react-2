@@ -2,25 +2,27 @@ import React, { Component } from 'react'
 import './App.css'
 import List from './components/List/List'
 import Form from './components/Form/Form'
+import Store from './Store'
 
 export default class App extends Component {
-    state = {
-        list: [],
-        editingItem: {
-            id: null,
-            name: '',
-            lastname: '',
-            phone: '',
-            mail: ''
-        }
-    }
+    constructor(props) {
+        super(props);
 
-    componentDidUpdate() {
-        localStorage.getItem(this.state.editingItem.id)
+        this.store = new Store('MyStore')
+        this.state = {
+            list: this.store.get('todos', []),
+            editingItem: {
+                id: null,
+                name: '',
+                lastname: '',
+                phone: '',
+                mail: ''
+            }
+        }
+
     }
 
     handleChangeItem = item => {
-        localStorage.setItem(this.state.editingItem.id, this.state.editingItem)
         this.setState({
             editingItem: item,
         });
@@ -28,6 +30,7 @@ export default class App extends Component {
 
     handleSave = (e) => {
         e.preventDefault()
+        this.store.set('todos', this.state.list)
         if (this.state.editingItem.id !== null) {
             this.setState(prev => ({
                 list: prev.list.map(e => (
@@ -36,7 +39,10 @@ export default class App extends Component {
                         : e
                 )),
             }));
+
+            
         } else {
+            this.store.set('todos', this.state.list)
             this.setState(prev => ({
                 list: [...prev.list, {
                     ...this.state.editingItem,
@@ -50,6 +56,7 @@ export default class App extends Component {
                     mail: ''
                 }
             }));
+            
         }
     };
 
@@ -63,7 +70,6 @@ export default class App extends Component {
                 mail: ''
             }
         }))
-        localStorage.getItem(this.state.editingItem.id)
     }
 
     onRemove = (e,item) => {
@@ -78,6 +84,7 @@ export default class App extends Component {
                 mail: ''
             }
         }));
+        this.store.getRemove('todos', this.state.list, item)
     }
 
  
