@@ -3,8 +3,6 @@ import './List.css'
 
 export default class Contacts extends Component {
 
-    
-
     render() {
         return (
             <div className="contacts">

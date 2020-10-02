@@ -70,7 +70,7 @@ export default class App extends Component {
     onRemove = (e, item) => {
         e.preventDefault()
 
-        contactsSevice.delete('/'+item.id).then(() => {
+        contactsSevice.delete('/' + item.id).then(() => {
             console.log(this.state.list)
             this.setState({
                 list: this.state.list.filter(e => e.id !== item.id),
