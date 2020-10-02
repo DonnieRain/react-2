@@ -65,7 +65,10 @@ export default class ContactInfo extends Component {
 
                     <div className="btn-block">
                         <button className="btn save">Save</button>
-                        <button onClick={((e) => this.props.onRemove(e,this.props.item))} className="btn delete">Delete</button>
+                        {this.props.item.id 
+                            ? <button onClick={((e) => this.props.onRemove(e,this.props.item))} className="btn delete">Delete</button>
+                            : null
+                        }
                     </div>
                 </form>
             </div>

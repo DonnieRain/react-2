@@ -32,7 +32,7 @@
     max-width: 300px;
     padding: 20px;
     margin-bottom: 20px;
-    margin-left: 20px;
+    margin: 20px;
     border-radius: 10px;
     border: 1px solid #2f2d51;
     transition: .2s;
@@ -50,6 +50,7 @@
 }
 
 .contacts_head{
+    text-align: center;
     margin: 20px;
 }
 
