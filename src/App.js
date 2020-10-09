@@ -1,22 +1,26 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
 import List from './components/List/List'
 import Form from './components/Form/Form'
 import contactsSevice from './contact-service'
 
-export default class App extends Component {
-    state = {
-        list: [],
-        editingItem: this.clearForm()
-    }
 
-    handleChangeItem = item => {
-        this.setState({
-            editingItem: item,
-        });
-    };
+function App() {
+    const [list, setList] = useState([])
+    const [edit, setEdit] = useState({
+        id: null,
+        name: '',
+        lastname: '',
+        phone: '',
+        mail: ''
+    })
 
-    clearForm() {
+    useEffect(() => {
+        contactsSevice.get('/')
+            .then(({ data }) => { setList(data) })
+    }, [])
+
+    function clearForm() {
         return {
             id: null,
             name: '',
@@ -26,80 +30,72 @@ export default class App extends Component {
         }
     }
 
-    handleUpdateContacts = (contact, editContact) => {
+    function handleChangeItem(item) {
+        console.log(list)
+        setList(list.editingItem = item)
+    };
+
+
+
+    function handleUpdateContacts(contact, editContact) {
         contactsSevice.put('/' + contact.id, editContact).then(({ data }) => {
-            this.setState(prev => ({
-                list: prev.list.map(e => e.id === data.id ? data : e),
-            }));
+            setList(list.list = list.list.map(e => e.id === data.id ? data : e))
         })
     }
 
-    handleAddContacts = (newContact) => {
+    function handleAddContacts(newContact) {
         contactsSevice.post('/', newContact).then(({ data }) => {
-            this.setState(prev => ({
-                list: [...prev.list, data]
-            }));
+            setList(list.list = [...list.list, data])
         })
     }
 
-    handleSave = (e) => {
+    function handleSave(e) {
         e.preventDefault()
 
-        if (this.state.editingItem.id !== null) {
-            const contact = this.state.list.find(item => item.id === this.state.editingItem.id)
-            const editContact = { ...contact, ...this.state.editingItem }
+        if (list.editingItem.id !== null) {
+            const contact = list.list.find(item => item.id === this.state.editingItem.id)
+            const editContact = { ...contact, ...list.editingItem }
 
-            this.handleUpdateContacts(contact, editContact)
+            handleUpdateContacts(contact, editContact)
 
         } else {
-            const newContact = { ...this.state.editingItem };
+            const newContact = { ...list.editingItem };
 
-            this.handleAddContacts(newContact)
-            this.setState({
-                editingItem: this.clearForm()
-            })
+            handleAddContacts(newContact)
+            setList(list.editingItem = clearForm())
         }
     };
 
-    addContact = () => {
-        this.setState({
-            editingItem: this.clearForm()
-        })
+    function addContact() {
+        setList(list.editingItem = clearForm())
     }
 
-    onRemove = (e, item) => {
+    function onRemove(e, item) {
         e.preventDefault()
 
         contactsSevice.delete('/' + item.id).then(() => {
-            console.log(this.state.list)
-            this.setState({
-                list: this.state.list.filter(e => e.id !== item.id),
-                editingItem: this.clearForm()
-            })
+            setList(
+                list.list = list.list.filter(e => e.id !== item.id),
+                list.editingItem = clearForm()
+            )
         })
     }
 
-    componentDidMount() {
-        contactsSevice.get('/').then(({ data }) => this.setState({
-            list: data
-        }))
-    }
-
-    render() {
-        return (
-            <div className="app">
-                <List
-                    list={this.state.list}
-                    onSelect={this.handleChangeItem}
-                    addContact={this.addContact}
-                />
-                <Form
-                    item={this.state.editingItem}
-                    onChange={this.handleChangeItem}
-                    onSubmit={this.handleSave}
-                    onRemove={this.onRemove}
-                />
-            </div>
-        )
-    }
+    return (
+        <div className="app">
+            <List
+                list={list}
+                onSelect={handleChangeItem}
+                addContact={addContact}
+            />
+            <Form
+                item={list}
+                onChange={handleChangeItem}
+                onSubmit={handleSave}
+                onRemove={onRemove}
+            />
+        </div>
+    )
 }
+
+export default App

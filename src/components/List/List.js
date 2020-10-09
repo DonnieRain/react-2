@@ -1,15 +1,14 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './List.css'
 
-export default class Contacts extends Component {
-
-    render() {
-        return (
+function List({ list, onSelect, addContact }) {
+    return (
+        <div>
             <div className="contacts">
                 <div className="contacts_list" >
-                    {this.props.list.map(item => {
+                    {list.map(item => {
                         return (
-                            <div className="contacts_item" key={item.id} onClick={() => this.props.onSelect(item)}>
+                            <div className="contacts_item" key={item.id} onClick={() => onSelect(item)}>
                                 <p className="contact">{item.name}</p>
                                 <p className="contact">{item.lastname}</p>
                                 <p className="contact">{item.phone}</p>
@@ -18,8 +17,10 @@ export default class Contacts extends Component {
                         )
                     })}
                 </div>
-                <div onClick={this.props.addContact} className="add">Add</div>
+                <div onClick={addContact} className="add">Add</div>
             </div>
-        )
-    }
+        </div>
+    )
 }
+
+export default List
