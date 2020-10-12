@@ -20,7 +20,7 @@ function Form({ onChange, item, onSubmit, onRemove }) {
                         className="input first-name"
                         type="text"
                         name="name"
-                        // value={item.name}
+                        value={item.name}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -31,8 +31,8 @@ function Form({ onChange, item, onSubmit, onRemove }) {
                         id="last-name"
                         className="input last-name"
                         type="text"
-                        name="lastname"
-                        // value={item.lastname}
+                        name="surname"
+                        value={item.surname}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -44,11 +44,11 @@ function Form({ onChange, item, onSubmit, onRemove }) {
                         className="input phone-number"
                         type="tel"
                         name="phone"
-                        // value={item.phone}
+                        value={item.phone}
                         onChange={handleInputChange}
                     />
                 </div>
-
+{/* 
                 <div>
                     <label htmlFor="">Email</label>
                     <input
@@ -56,18 +56,18 @@ function Form({ onChange, item, onSubmit, onRemove }) {
                         className="input email"
                         type="email"
                         name="mail"
-                        // value={item.mail}
+                        value={item.mail}
                         onChange={handleInputChange}
                     />
-                </div>
+                </div> */}
 
-                {/* <div className="btn-block">
+                <div className="btn-block">
                     <button className="btn save">Save</button>
                     {item.id
                         ? <button onClick={((e) => onRemove(e, item))} className="btn delete">Delete</button>
                         : null
                     }
-                </div> */}
+                </div> 
             </form>
         </div>
     )

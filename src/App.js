@@ -10,9 +10,9 @@ function App() {
     const [edit, setEdit] = useState({
         id: null,
         name: '',
-        lastname: '',
+        surname: '',
         phone: '',
-        mail: ''
+        // mail: ''
     })
 
     useEffect(() => {
@@ -24,60 +24,58 @@ function App() {
         return {
             id: null,
             name: '',
-            lastname: '',
+            surname: '',
             phone: '',
-            mail: ''
+            // mail: ''
         }
     }
 
     function handleChangeItem(item) {
-        console.log(list)
-        setList(list.editingItem = item)
+        setEdit(item)
     };
 
 
 
     function handleUpdateContacts(contact, editContact) {
         contactsSevice.put('/' + contact.id, editContact).then(({ data }) => {
-            setList(list.list = list.list.map(e => e.id === data.id ? data : e))
+            setList(list.map(e => e.id === data.id ? data : e))
         })
     }
 
     function handleAddContacts(newContact) {
         contactsSevice.post('/', newContact).then(({ data }) => {
-            setList(list.list = [...list.list, data])
+            setList([...list, data])
         })
     }
 
     function handleSave(e) {
         e.preventDefault()
 
-        if (list.editingItem.id !== null) {
-            const contact = list.list.find(item => item.id === this.state.editingItem.id)
-            const editContact = { ...contact, ...list.editingItem }
+        if (edit.id !== null) {
+            const contact = list.find(item => item.id === edit.id)
+            const editContact = { ...contact, ...edit }
 
             handleUpdateContacts(contact, editContact)
 
         } else {
-            const newContact = { ...list.editingItem };
+            const newContact = { ...edit };
 
             handleAddContacts(newContact)
-            setList(list.editingItem = clearForm())
+            setEdit(clearForm)
         }
     };
 
     function addContact() {
-        setList(list.editingItem = clearForm())
+        setEdit(clearForm)
     }
 
     function onRemove(e, item) {
         e.preventDefault()
 
         contactsSevice.delete('/' + item.id).then(() => {
-            setList(
-                list.list = list.list.filter(e => e.id !== item.id),
-                list.editingItem = clearForm()
-            )
+            let deleteElement = list.filter(e => e.id !== item.id)
+            setList(deleteElement)
+            setEdit(clearForm)
         })
     }
 
@@ -89,7 +87,7 @@ function App() {
                 addContact={addContact}
             />
             <Form
-                item={list}
+                item={edit}
                 onChange={handleChangeItem}
                 onSubmit={handleSave}
                 onRemove={onRemove}
